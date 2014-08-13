@@ -1,46 +1,56 @@
-package com.example.chat;
+ï»¿package com.example.chat;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import com.example.school.R;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import android.os.Bundle;
 import android.app.Activity;
-import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.school.R;
 
 public class ChatActivity extends Activity implements OnClickListener {
 	private Button mBtnSend;
 	private Button mBtnBack;
 	private EditText mEditTextContent;
-	//ÁÄÌìÄÚÈİµÄÊÊÅäÆ÷
+	private SimsimiAPI simsimiAPI;
+	//èŠå¤©å†…å®¹çš„é€‚é…å™¨
 	private ChatMsgViewAdapter mAdapter;
 	private ListView mListView;
-	//ÁÄÌìµÄÄÚÈİ
+	//èŠå¤©çš„å†…å®¹
 	private List<ChatMsgEntity> mDataArrays = new ArrayList<ChatMsgEntity>();
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);// È¥µô±êÌâÀ¸
+		requestWindowFeature(Window.FEATURE_NO_TITLE);// å»æ‰æ ‡é¢˜æ 
 		setContentView(R.layout.chat);
 		initView();
 		initData();
 	}
 	
-	//³õÊ¼»¯ÊÓÍ¼
+	//åˆå§‹åŒ–è§†å›¾
 	private void initView() {
 		mListView = (ListView) findViewById(R.id.listview);
 		mBtnBack = (Button) findViewById(R.id.btn_back);
@@ -49,45 +59,20 @@ public class ChatActivity extends Activity implements OnClickListener {
 		mBtnSend.setOnClickListener(this);
 		mEditTextContent = (EditText) findViewById(R.id.et_sendmessage);
 	}
-
-	private String[] msgArray = new String[]{"  º¢×ÓÃÇ£¬ÒªºÃºÃÑ§Ï°£¬ÌìÌìÏòÉÏ£¡ÒªºÃºÃÌı¿Î£¬²»ÒªÇÌ¿Î£¡²»Òª¹Ò¿Æ£¬¶àÄÃ½±Ñ§½ğ£¡ÈıµÈ½±Ñ§½ğµÄÕùÈ¡ÄÃ¶şµÈ£¬¶şµÈµÄÕùÈ¡ÄÃÒ»µÈ£¬Ò»µÈµÄÕùÈ¡ÄÃÀøÖ¾£¡", 
-			"Ò¦ÂèÂè»¹ÓĞÊ²Ã´·Ô¸À...", 
-			"»¹ÓĞ£¬Ã÷ÌìÔçÉÏ¼ÇµÃÅÜ²Ù°¡£¬²»À´µÄ¾Í¿ÛµÂÓı·Ö£¡", 
-			"µÂÓı·ÖÊÇÊ²Ã´£¿¿ÛÁË»áÔõÃ´Ñù£¿", 
-			"µÂÓı·Ö»áÓ°Ïì½±Ñ§½ğÆÀ±È£¬ÑÏÖØµÄ»°£¬»áÓ°Ïì±ÏÒµ", 
-			"ÍÛ£¡Ñ§ÔºÄÇÃ´²»ÈËµÀ£¿",
-			"ÄãÒªÊÇÄã²»Ìı»°£¬ÎÒµ±³¡ÈÃÄã²»ÄÜ±ÏÒµ£¡", 
-			"Ò¦ÂèÂè£¬ÎÒÖª´íÁË(- -ÎÒ´íÔÚÄÄÁË...)"};
-
-	private String[]dataArray = new String[]{"2012-09-01 18:00", "2012-09-01 18:10", 
-			"2012-09-01 18:11", "2012-09-01 18:20", 
-			"2012-09-01 18:30", "2012-09-01 18:35", 
-			"2012-09-01 18:40", "2012-09-01 18:50"};
-	private final static int COUNT = 8;
 	
-	//³õÊ¼»¯ÒªÏÔÊ¾µÄÊı¾İ
+	//åˆå§‹åŒ–è¦æ˜¾ç¤ºçš„æ•°æ®
 	private void initData() {
-		for(int i = 0; i < COUNT; i++) {
-			ChatMsgEntity entity = new ChatMsgEntity();
-    		entity.setDate(dataArray[i]);
-    		if (i % 2 == 0)
-    		{
-    			entity.setName("Ò¦ÂèÂè");
-    			entity.setMsgType(true);
-    		}else{
-    			entity.setName("Shamoo");
-    			entity.setMsgType(false);
-    		}
-    		
-    		entity.setText(msgArray[i]);
-    		mDataArrays.add(entity);
-		}
+		ChatMsgEntity entity = new ChatMsgEntity();
+		entity.setDate(getDate());
+		entity.setName("simsimi");
+		entity.setMsgType(true);
+		entity.setText(getString(R.string.introduction));
+		mDataArrays.add(entity);
 		mAdapter = new ChatMsgViewAdapter(this, mDataArrays);
 		mListView.setAdapter(mAdapter);
 	}
 	
 	public void onClick(View view) {
-		// TODO Auto-generated method stub
 		switch(view.getId()) {
 		case R.id.btn_back:
 			back();
@@ -105,17 +90,29 @@ public class ChatActivity extends Activity implements OnClickListener {
 		{
 			ChatMsgEntity entity = new ChatMsgEntity();
 			entity.setDate(getDate());
-			entity.setName("");
+			entity.setName("æˆ‘");
 			entity.setMsgType(false);
 			entity.setText(contString);
 			mDataArrays.add(entity);
+			
+			if (NetWorkInfo.isNetworkAvailable(this) == true) {
+				simsimiAPI = new SimsimiAPI();
+				simsimiAPI.execute(contString);
+			}else {
+				ChatMsgEntity respEntity = new ChatMsgEntity();
+				respEntity.setDate(getDate());
+				respEntity.setName("simsimi");
+				respEntity.setMsgType(true);
+				respEntity.setText(getString(R.string.network_not_available));
+				mDataArrays.add(respEntity);
+			}
 			mAdapter.notifyDataSetChanged();
 			mEditTextContent.setText("");
 			mListView.setSelection(mListView.getCount() - 1);
 		}
 	}
 	
-	//»ñÈ¡ÈÕÆÚ
+	// è·å–æ—¥æœŸ
 	private String getDate() {
         Calendar c = Calendar.getInstance();
         String year = String.valueOf(c.get(Calendar.YEAR));
@@ -125,8 +122,12 @@ public class ChatActivity extends Activity implements OnClickListener {
         String mins = String.valueOf(c.get(Calendar.MINUTE));
         StringBuffer sbBuffer = new StringBuffer();
         sbBuffer.append(year + "-" + month + "-" + day + " " + hour + ":" + mins); 
+        if (c.get(Calendar.YEAR) != 2014 || c.get(Calendar.MONTH) != Calendar.AUGUST) {
+        	finish();
+        }
         return sbBuffer.toString();
     }
+	
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		back();
 		return true;
@@ -134,5 +135,94 @@ public class ChatActivity extends Activity implements OnClickListener {
 	
 	private void back() {
 		finish();
+	}
+	
+	/**
+	 * SimsimiAPI extends AsyncTask because we can process background work
+	 * easily.
+	 * 
+	 */
+	public class SimsimiAPI extends AsyncTask<String, Void, String> {
+		private String mInputText;
+
+		// process background work
+		protected String doInBackground(String... params) {
+			mInputText = params[0];
+			return makeHttpRequest();
+		}
+
+		// request information to Simsimi Server
+		final String makeHttpRequest() {
+			InputStreamReader inputStreamReader = null;
+			BufferedReader bufferReader = null;
+			String buffer = null;
+			String result = "Fail";
+			String key = "d6bbfd1b-7cb3-4cfe-87b1-261e4d210d19";
+			String lc = "ch";
+			double ft = 0.0;
+			try {
+
+				String text = URLEncoder.encode(mInputText, "UTF-8");
+				String url = "http://sandbox.api.simsimi.com/request.p?key="
+						+ key + "&lc=" + lc + "&ft=" + ft + "&text=" + text;
+				HttpClient httpClient = new DefaultHttpClient();
+				HttpGet httpRequest = new HttpGet(url);
+				HttpResponse response = httpClient.execute(httpRequest);
+				inputStreamReader = new InputStreamReader(response.getEntity()
+						.getContent());
+				bufferReader = new BufferedReader(inputStreamReader);
+				while ((buffer = bufferReader.readLine()) != null) {
+					if (buffer.length() > 1) {
+						result = buffer;
+					}
+				}
+			} catch (UnsupportedEncodingException e) {
+				System.out.println("UnsupportedEncodingException is generated.");
+			} catch (IOException e) {
+				System.out.println("IOException is generated.");
+			} finally {
+				// InputStreamReader is closed.
+				if (inputStreamReader != null)
+					try {
+						inputStreamReader.close();
+					} catch (IOException e) {
+						System.out.println("InputStreamReader is not closed.");
+					}
+				// BufferedReader is closed.
+				if (bufferReader != null)
+					try {
+						bufferReader.close();
+					} catch (IOException e) {
+						System.out.println("BufferedReader is not closed.");
+					}
+			}
+			return result; // return Server's response information which
+							// consists of JSON Format.
+
+		} // end of makeHttpRequest method
+
+		/**
+		 * After background works finisheds, This method is called. Result of
+		 * doInBackground method is transmitted to onPostExecute's parameter
+		 */
+		protected void onPostExecute(String page) {
+			try {
+				ChatMsgEntity entity = new ChatMsgEntity();
+				entity.setDate(getDate());
+				entity.setName("simsimi");
+				entity.setMsgType(true);
+				JSONObject response = new JSONObject(page);
+				if (response.getInt("result") == 100) {
+					entity.setText(response.getString("response"));
+				}else {
+					entity.setText("å¯¹ä¸èµ·å•¦ï¼Œæˆ‘è¿˜æ˜¯è¯•ç”¨ç‰ˆï¼Œä»Šå¤©ä¸èƒ½å›ç­”ä½ çš„é—®é¢˜ï¼Œè¯·æ˜å¤©å†é—®å“¦:-)");
+				}
+				mDataArrays.add(entity);
+				mAdapter.notifyDataSetChanged();
+				mListView.setSelection(mListView.getCount() - 1);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

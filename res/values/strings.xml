@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">school</string>
+    <string name="app_name">聊天机器人</string>
+    <string name="introduction">我是一个来自韩国的可爱智能聊天机器人simsimi，现在向对话框输入文字就可以开始聊天了，快来和我对话吧！</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="school_title_name">学院通知</string>
+    <string name="school_title_name">simsimi</string>
+    <string name="network_not_available">网络未连接，simsimi暂时无法回答您的问题!</string>
     <string name="back">返回</string>
     <string name="send">发送</string>
-
 </resources>

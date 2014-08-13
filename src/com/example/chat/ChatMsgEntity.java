@@ -1,15 +1,15 @@
-
+ï»¿
 package com.example.chat;
 
 public class ChatMsgEntity {
     private static final String TAG = ChatMsgEntity.class.getSimpleName();
-    //Ãû×Ö
+    //åå­—
     private String name;
-    //ÈÕÆÚ
+    //æ—¥æœŸ
     private String date;
-    //ÁÄÌìÄÚÈİ
+    //èŠå¤©å†…å®¹
     private String text;
-    //ÊÇ·ñÎª¶Ô·½·¢À´µÄĞÅÏ¢
+    //æ˜¯å¦ä¸ºå¯¹æ–¹å‘æ¥çš„ä¿¡æ¯
     private boolean isComMeg = true;
 
     public String getName() {

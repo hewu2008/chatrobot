@@ -1,4 +1,4 @@
-
+ï»¿
 package com.example.chat;
 
 import android.R.integer;
@@ -24,12 +24,12 @@ import com.example.school.R;
 
 public class ChatMsgViewAdapter extends BaseAdapter {
 	
-	//ListViewÊÓÍ¼µÄÄÚÈİÓÉIMsgViewType¾ö¶¨
+	//ListViewè§†å›¾çš„å†…å®¹ç”±IMsgViewTypeå†³å®š
 	public static interface IMsgViewType
 	{
-		//¶Ô·½·¢À´µÄĞÅÏ¢
+		//å¯¹æ–¹å‘æ¥çš„ä¿¡æ¯
 		int IMVT_COM_MSG = 0;
-		//×Ô¼º·¢³öµÄĞÅÏ¢
+		//è‡ªå·±å‘å‡ºçš„ä¿¡æ¯
 		int IMVT_TO_MSG = 1;
 	}
 	
@@ -41,26 +41,26 @@ public class ChatMsgViewAdapter extends BaseAdapter {
     public ChatMsgViewAdapter(Context context, List<ChatMsgEntity> data) {
         this.context = context;
         this.data = data;
-        //LayoutInflaterç±»ä¼¼findViewByIdï¼Œåªæ˜¯LayoutInflateræ˜¯æ‰¾res/layout/ä¸‹çš„.xmlæ–‡ä»¶
+        //LayoutInflaterç»«è®³æŠ€findViewByIdé”›å±½å½§é„ç–ayoutInflateré„îˆ›å£˜res/layout/æ¶“å¬¬æ®‘.xmlé‚å›¦æ¬¢
         mInflater = LayoutInflater.from(context);
     }
 
-    //»ñÈ¡ListViewµÄÏî¸öÊı
+    //è·å–ListViewçš„é¡¹ä¸ªæ•°
     public int getCount() {
         return data.size();
     }
 
-    //»ñÈ¡Ïî
+    //è·å–é¡¹
     public Object getItem(int position) {
         return data.get(position);
     }
 
-    //»ñÈ¡ÏîµÄID
+    //è·å–é¡¹çš„ID
     public long getItemId(int position) {
         return position;
     }
 
-    //»ñÈ¡ÏîµÄÀàĞÍ
+    //è·å–é¡¹çš„ç±»å‹
 	public int getItemViewType(int position) {
 		// TODO Auto-generated method stub
 	 	ChatMsgEntity entity = data.get(position);
@@ -74,13 +74,13 @@ public class ChatMsgViewAdapter extends BaseAdapter {
 	 	
 	}
 
-	//»ñÈ¡ÏîµÄÀàĞÍÊı
+	//è·å–é¡¹çš„ç±»å‹æ•°
 	public int getViewTypeCount() {
 		// TODO Auto-generated method stub
 		return 2;
 	}
 	
-	//»ñÈ¡View
+	//è·å–View
     public View getView(int position, View convertView, ViewGroup parent) {
     	
     	ChatMsgEntity entity = data.get(position);
@@ -91,10 +91,10 @@ public class ChatMsgViewAdapter extends BaseAdapter {
 	    {
 	    	  if (isComMsg)
 			  {
-	    		  //Èç¹ûÊÇ¶Ô·½·¢À´µÄÏûÏ¢£¬ÔòÏÔÊ¾µÄÊÇ×óÆøÅİ
+	    		  //å¦‚æœæ˜¯å¯¹æ–¹å‘æ¥çš„æ¶ˆæ¯ï¼Œåˆ™æ˜¾ç¤ºçš„æ˜¯å·¦æ°”æ³¡
 				  convertView = mInflater.inflate(R.layout.chatting_item_msg_text_left, null);
 			  }else{
-				  //Èç¹ûÊÇ×Ô¼º·¢³öµÄÏûÏ¢£¬ÔòÏÔÊ¾µÄÊÇÓÒÆøÅİ
+				  //å¦‚æœæ˜¯è‡ªå·±å‘å‡ºçš„æ¶ˆæ¯ï¼Œåˆ™æ˜¾ç¤ºçš„æ˜¯å³æ°”æ³¡
 				  convertView = mInflater.inflate(R.layout.chatting_item_msg_text_right, null);
 			  }
 
@@ -115,7 +115,7 @@ public class ChatMsgViewAdapter extends BaseAdapter {
 	    return convertView;
     }
     
-    //Í¨¹ıViewHolderÏÔÊ¾ÏîµÄÄÚÈİ
+    //é€šè¿‡ViewHolderæ˜¾ç¤ºé¡¹çš„å†…å®¹
     static class ViewHolder { 
         public TextView tvSendTime;
         public TextView tvUserName;

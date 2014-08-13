@@ -32,7 +32,8 @@
 	        android:background="@drawable/campus_info"
 	        android:layout_centerVertical="true"
 	        android:layout_alignParentRight="true"
-	        android:layout_marginRight="15dp"/>
+	        android:layout_marginRight="15dp"
+	        android:visibility="gone"/>
 	    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/rl_bottom"
