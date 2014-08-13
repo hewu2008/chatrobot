@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">school</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="school_title_name">学院通知</string>
+    <string name="back">返回</string>
+    <string name="send">发送</string>
+
+</resources>

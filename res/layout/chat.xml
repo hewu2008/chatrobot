@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#f0f0e0" >
+    <RelativeLayout
+	    android:id="@+id/rl_layout" 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:background="@drawable/title" >
+	    <Button 
+            android:id="@+id/btn_back" 
+            android:gravity="center_vertical" 
+            android:layout_marginLeft="5dp" 
+            android:paddingLeft="18dp" 
+            android:textSize="18.0sp" 
+            android:textColor="#ffffff"  
+            android:background="@drawable/selector_btn_back" 
+            android:layout_width="70dp" 
+            android:layout_height="wrap_content" 
+            android:text="@string/back" />
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/school_title_name"
+	        android:layout_centerInParent="true"
+	        style="@style/my_txt"/>
+	    <ImageView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/campus_info"
+	        android:layout_centerVertical="true"
+	        android:layout_alignParentRight="true"
+	        android:layout_marginRight="15dp"/>
+	    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_bottom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/layout_bg1" >
+        <Button
+        	android:id="@+id/btn_send"
+        	android:layout_width="60dp"
+        	android:layout_height="40dp"
+        	android:layout_alignParentRight="true"
+        	android:layout_marginRight="10dp"
+        	android:layout_centerVertical="true"
+        	android:text="@string/send" />
+        <EditText
+	        android:id="@+id/et_sendmessage"
+    	    android:layout_width="fill_parent"
+        	android:layout_height="40dp"
+        	android:layout_toLeftOf="@id/btn_send"
+        	android:layout_marginLeft="10dp"
+        	android:layout_marginRight="10dp"
+        	android:background="@drawable/edittext1"
+        	android:layout_centerVertical="true"
+        	android:singleLine="true"
+        	android:textSize="18sp"/>
+    </RelativeLayout>
+    <ListView
+    	android:id="@+id/listview"
+    	android:layout_below="@id/rl_layout"
+    	android:layout_above="@id/rl_bottom"
+    	android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    	android:layout_marginLeft="10.0dip" 
+		android:layout_marginTop="10.0dip" 
+		android:layout_marginRight="10.0dip"
+    	android:divider="@null"
+    	android:dividerHeight="5dp"
+    	android:scrollbars="none"
+    	android:cacheColorHint="#00000000"/>
+</RelativeLayout>
